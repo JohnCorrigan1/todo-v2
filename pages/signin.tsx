@@ -17,7 +17,7 @@ const SignIn: NextPage = () => {
     }
 
     return(
-        <div>
+        <div className='flex justify-center mt-10'>
              <button
       className="bg-zinc-200 rounded-md p-3 flex gap-10 items-center shadow-sm border"
       onClick={signInWithGoogle}
