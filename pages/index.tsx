@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-center mt-10 text-2xl">
-      {user ? <h1>{user.displayName}&apos's Todos</h1> : <h1>Sign in</h1>} 
+      {user ? <h1>{user.displayName}`&apos`s Todos</h1> : <h1>Sign in</h1>} 
       </div>
       <div className='items-center justify-center flex mt-10'>
       <Todo title="Learn Firebase" description='Learn authentication and crud operations with firebase and nextJS' done={false} due="1/1/2023" /> 
