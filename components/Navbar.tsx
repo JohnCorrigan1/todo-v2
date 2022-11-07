@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
       <ul className=" p-5 pl-5 pr-5 flex w-full items-center sm:pl-10 sm:pr-10 justify-between">
         <li>
           <Link href="/">
-            <button className="bg-slate-600 text-white p-3 pr-6 pl-6 sm:p-2 sm:pr-4 sm:pl-4 rounded-md active:scale-95 hover:bg-slate-700">
+            <button className="shadow-sm bg-slate-600 text-white p-3 pr-6 pl-6 sm:p-2 sm:pr-4 sm:pl-4 rounded-md active:scale-95 hover:bg-slate-700">
               Todos
             </button>
           </Link>
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
         {!user ? (
           <li>
             <Link href="/signin">
-              <button className="bg-sky-500 text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600">
+              <button className="bg-sky-500 shadow-sm text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600">
                 Log In
               </button>
             </Link>
@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
             </li>
             <li>
               <Link href="/signin">
-                <button className="bg-sky-500 text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600" onClick={() => auth.signOut()}>
+                <button className="bg-sky-500 shadow-sm text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600" onClick={() => auth.signOut()}>
                   Log Out
                 </button>
               </Link>
