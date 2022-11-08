@@ -5,15 +5,14 @@ import { signInWithPopup, signInAnonymously, signOut } from 'firebase/auth';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { UserContext } from "../lib/AuthContext";
 import { auth, db, googleProvider } from '../lib/firebase';
+import { addDoc, collection } from "firebase/firestore"; 
 
 const SignIn: NextPage = () => {
 
     const { user } = useContext(UserContext)
 
     const signInWithGoogle = async () => {
-        console.log("before", user)
-        await signInWithPopup(auth, googleProvider);
-        console.log("after",user)
+        await signInWithPopup(auth, googleProvider)
     }
 
     return(

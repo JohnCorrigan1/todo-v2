@@ -19,7 +19,7 @@ const Todo: React.FC<{
   };
 
   return (
-    <div className="flex flex-col w-5/6  items-center sm:w-2/3">
+    <div className="flex flex-col w-full items-center sm:w-2/3">
     <div className={(isExpand ? "rounded-t-md " : "rounded-md ") + "bg-slate-400 flex justify-between p-3 items-center w-5/6  shadow-lg sm:w-2/3"}>
       <h1 className={(isDone ? " line-through " : " ") + "text-xl sm:text-2xl"}>{props.title}</h1>
       <div className="flex gap-5">
