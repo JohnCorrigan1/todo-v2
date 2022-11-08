@@ -1,20 +1,26 @@
 import React, { Dispatch, useRef } from "react";
+import { db } from "../lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../lib/firebase";
 
 const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
   props
 ) => {
+
+  const [user] = useAuthState(auth);
   const title = useRef<HTMLInputElement>(null);
   const description = useRef<HTMLInputElement>(null);
   const date = useRef<HTMLInputElement>(null);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    const enteredTitle = title.current?.value;
-    const enteredDescription = description.current?.value;
-    const enteredDate = date.current?.value
+    const enteredTitle = title.current!.value;
+    const enteredDescription = description.current!.value;
+    const enteredDate = date.current!.value
 
-    const newTodo = {enteredTitle, enteredDescription, enteredDate}
-
+    
+    addFakeHandler(enteredTitle, enteredDescription, enteredDate)
     props.setIsOpen(false);
   };
 
@@ -22,9 +28,28 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
     props.setIsOpen(false);
   };
 
+  const addFakeHandler = async (enteredTitle: string, enteredDescription: string, enteredDate: string) => {
+    if (!user) {
+      return;
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, "todos"), {
+        uid: user.uid,
+        title: enteredTitle,
+        description: enteredDescription,
+        date: enteredDate
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
   if (!props.isOpen) return null;
 
-  return (
+  return ( 
     <>
       <div className="modal bg-black bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 z-50"></div>
       <div className="bg-white flex flex-col gap-10 items-center justify-center p-12 rounded-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-lg z-50 h-5/8 sm:h-1/2">

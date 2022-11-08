@@ -6,34 +6,41 @@ import { auth } from "../lib/firebase";
 import Todo from "../components/Todo";
 import FormModal from "../components/FormModal";
 import { db } from "../lib/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, getDocs, query, where} from "firebase/firestore";
+
+type Todo = {
+  title: string,
+  description: string,
+  date: string,
+  uid: string
+}
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
 
-  const addHandler = () => {
+  const Todos: Todo[] = []
+
+  const addHandler = async() => {
     setIsOpen(true);
+    const q = query(collection(db, "todos"), where("uid", "==", user?.uid));
+console.log(q)
+const querySnapshot = await getDocs(q);
+querySnapshot.forEach((doc: any) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+  Todos.push(doc.data())
+});
+console.log(Todos)
+
   };
 
-  const addFakeHandler = async () => {
-    if (!user) {
-      return;
-    }
+  // const Todos = () => {
+//     .collection("todos")
 
-    try {
-      const docRef = await addDoc(collection(db, "todos"), {
-        uid: user.uid,
-        title: "Learn react",
-        description: "code something cool",
-        date: "1/2/2223",
-      });
-
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
+// .where("uid", "==", user?.uid)
+  // }
+  
 
   return (
     <div className="flex justify-center flex-col">
@@ -46,7 +53,7 @@ const Home: NextPage = () => {
         {user ? <h1>{user.displayName}s Todos</h1> : <h1>Sign in</h1>}
       </div>
       <div>
-        <button className="bg-emerald-300 p-3" onClick={addFakeHandler}>
+        <button className="bg-emerald-300 p-3" onClick={addHandler}>
           Add Todo
         </button>
       </div>
@@ -58,6 +65,14 @@ const Home: NextPage = () => {
           done={false}
           due="1/1/2023"
         />
+        {Todos.map(todo => {
+          <Todo
+          title={todo.title}
+          description={todo.description}
+          done={false}
+          due={todo.date}
+          />
+        })}
       </div>
     </div>
   );
