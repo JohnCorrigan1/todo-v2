@@ -15,6 +15,19 @@ const SignIn: NextPage = () => {
         await signInWithPopup(auth, googleProvider)
     }
 
+    const addUser = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "users"), {
+              name: user?.displayName,
+              todos: []
+            });
+          
+            console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+    }
+
     return(
         <div className='flex justify-center mt-10'>
              <button
@@ -24,6 +37,7 @@ const SignIn: NextPage = () => {
       <Image src="/google.png" alt="Google sign in" width={30} height={30} /> Sign in
       with Google
     </button>
+    <button onClick={addUser}>add me</button>
         </div>
     )
 }
