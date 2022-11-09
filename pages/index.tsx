@@ -13,13 +13,13 @@ type Todo = {
   description: string,
   date: string,
   uid: string
-}
+} | null
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
 
-  const Todos: Todo[] = []
+ const [Todos, setTodos] = useState<Todo[]>([])
 
   const addHandler = async() => {
     setIsOpen(true);
@@ -29,7 +29,9 @@ const querySnapshot = await getDocs(q);
 querySnapshot.forEach((doc: any) => {
   // doc.data() is never undefined for query doc snapshots
   console.log(doc.id, " => ", doc.data());
-  Todos.push(doc.data())
+  setTodos((prevTodos) => {
+    return [doc.data(), ...prevTodos]
+  })
 });
 console.log(Todos)
 
@@ -58,19 +60,19 @@ console.log(Todos)
         </button>
       </div>
       <FormModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <div className="items-center justify-center flex mt-10">
+      <div className="items-center justify-center flex flex-col gap-5 mt-10">
         <Todo
           title="Learn Firebase"
           description="Learn authentication and crud operations with firebase and nextJS"
           done={false}
           due="1/1/2023"
         />
-        {Todos.map(todo => {
-          <Todo
-          title={todo.title}
-          description={todo.description}
+        {Todos?.map(todo => {
+         return <Todo
+          title={todo!.title}
+          description={todo!.description}
           done={false}
-          due={todo.date}
+          due={todo!.date}
           />
         })}
       </div>
