@@ -3,8 +3,9 @@ import { db } from "../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
+import { Todo } from '../pages/index'
 
-const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
+const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTodos: Dispatch<Todo[]> }> = (
   props
 ) => {
 
@@ -21,6 +22,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
 
     
     addFakeHandler(enteredTitle, enteredDescription, enteredDate)
+    const Todo: Todo = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
     props.setIsOpen(false);
   };
 
