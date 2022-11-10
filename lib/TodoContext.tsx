@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TodoItem } from "../models/todo";
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { defaultConfig } from "next/dist/server/config-shared";
 
 type TodoContextObj = {
@@ -16,18 +16,23 @@ type Props = {
       | React.ReactChild[];
   }; 
 
-export const TodosContext = React.createContext<TodoContextObj>({
+export const TodosContext = createContext<TodoContextObj>({
   items: [],
-  addTodo: () => {},
+  addTodo: (title: string, description: string, date: string, uid:string) => {},
 //   removeTodo: (id: string) => {},
 });
 
 const TodosContextProvider: React.FC<Props> = (props) => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
+  // const addTodoHandler = (title: string, description: string, date: string, uid: string) => {
+  //   setTodos((prevTodos) => {
+  //     return prevTodos.concat(new TodoItem(title, description, date, uid));
+  //   });
   const addTodoHandler = (title: string, description: string, date: string, uid: string) => {
+    console.log("in contect", todos)
     setTodos((prevTodos) => {
-      return prevTodos.concat(new TodoItem(title, description, date, uid));
+      return [...prevTodos, new TodoItem(title, description, date, uid)];
     });
   };
 

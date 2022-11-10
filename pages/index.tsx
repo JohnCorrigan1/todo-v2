@@ -42,6 +42,7 @@ const Home: NextPage = () => {
     if (user) {
       if (todosContext.items.length < 1) {
         getTodos();
+        console.log("test")
       }
     }
   });
@@ -57,8 +58,11 @@ const Home: NextPage = () => {
       // });
       const item = doc.data()
       // console.log(item)
+      // todosContext.addTodo(item)
       todosContext.addTodo(item.title, item.description, item.date, item.uid)
+      // console.log(todosContext.items)
     });
+    // console.log("items", todosContext.items)
   };
   
   // todosContext.addTodo(doc.data())
@@ -95,11 +99,11 @@ const Home: NextPage = () => {
         {todosContext.items?.map((todo: TodoItem) => {
           return (
             <Todo
-              title={todo!.title}
-              description={todo!.description}
+              title={todo.title}
+              description={todo.description}
               done={false}
-              due={todo!.date}
-              uid={user!.uid}
+              due={todo.date}
+              uid={user.uid}
             />
           );
         })}
