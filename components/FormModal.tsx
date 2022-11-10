@@ -1,13 +1,16 @@
-import React, { Dispatch, useRef } from "react";
+import React, { Dispatch, useRef, useContext } from "react";
 import { db } from "../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
-import { Todo } from '../pages/index'
+import { TodoItem } from '../models/todo'
+import { todoActions } from "../store";
+import { TodosContext } from '../lib/TodoContext';
 
-const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTodos: Dispatch<Todo[]>; todos: Todo[] }> = (
+const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
   props
 ) => {
+  const todosContext = useContext(TodosContext)
 
   const [user] = useAuthState(auth);
   const title = useRef<HTMLInputElement>(null);
@@ -19,9 +22,11 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTo
     const enteredTitle = title.current!.value;
     const enteredDescription = description.current!.value;
     const enteredDate = date.current!.value
-
-    const newTodo: Todo = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
+    // const oldTodos: TodoItem[] = props.todos;
+    const newTodo: TodoItem = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
     
+    // props.setTodos((prevState: TodoItem[]) => [...prevState, newTodo])
+    todosContext.addTodo(enteredTitle, enteredDescription, enteredDate, user!.uid)
     addFakeHandler(enteredTitle, enteredDescription, enteredDate)
     props.setIsOpen(false);
   };

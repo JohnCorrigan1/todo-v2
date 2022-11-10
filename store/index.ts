@@ -1,12 +1,12 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { Todo } from '../pages/index';
+import { TodoItem } from '../models/todo'
 import { db } from "../lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 
 
-const Todos = []
+const Todos: TodoItem[] = []
 const [user] = useAuthState(auth);
 
 
