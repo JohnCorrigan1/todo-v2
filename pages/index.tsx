@@ -74,6 +74,7 @@ const Home: NextPage = () => {
                 done={false}
                 due={todo.date}
                 uid={user.uid}
+                key={todo.todoId}
               />
             );
           })}
