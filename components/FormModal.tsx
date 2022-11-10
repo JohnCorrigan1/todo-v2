@@ -3,14 +3,12 @@ import { db } from "../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
-import { TodoItem } from '../models/todo'
-import { todoActions } from "../store";
-import { TodosContext } from '../lib/TodoContext';
+import { TodosContext } from "../lib/TodoContext";
 
 const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
   props
 ) => {
-  const todosContext = useContext(TodosContext)
+  const todosContext = useContext(TodosContext);
 
   const [user] = useAuthState(auth);
   const title = useRef<HTMLInputElement>(null);
@@ -21,13 +19,15 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
     event.preventDefault();
     const enteredTitle = title.current!.value;
     const enteredDescription = description.current!.value;
-    const enteredDate = date.current!.value
-    // const oldTodos: TodoItem[] = props.todos;
-    const newTodo: TodoItem = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid, todoId: Math.random().toString()}
-    
-    // props.setTodos((prevState: TodoItem[]) => [...prevState, newTodo])
-    todosContext.addTodo(enteredTitle, enteredDescription, enteredDate, user!.uid)
-    addFakeHandler(enteredTitle, enteredDescription, enteredDate)
+    const enteredDate = date.current!.value;
+
+    todosContext.addTodo(
+      enteredTitle,
+      enteredDescription,
+      enteredDate,
+      user!.uid
+    );
+    addFakeHandler(enteredTitle, enteredDescription, enteredDate);
     props.setIsOpen(false);
   };
 
@@ -35,7 +35,11 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
     props.setIsOpen(false);
   };
 
-  const addFakeHandler = async (enteredTitle: string, enteredDescription: string, enteredDate: string) => {
+  const addFakeHandler = async (
+    enteredTitle: string,
+    enteredDescription: string,
+    enteredDate: string
+  ) => {
     if (!user) {
       return;
     }
@@ -46,7 +50,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
         title: enteredTitle,
         description: enteredDescription,
         date: enteredDate,
-        todoId: Math.random().toString()
+        todoId: Math.random().toString(),
       });
 
       console.log("Document written with ID: ", docRef.id);
@@ -57,7 +61,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
 
   if (!props.isOpen) return null;
 
-  return ( 
+  return (
     <>
       <div className="modal bg-black bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 z-50"></div>
       <div className="bg-white flex flex-col gap-10 items-center justify-center p-12 rounded-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-lg z-50 h-5/8 sm:h-1/2">
@@ -85,12 +89,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
             </div>
             <div className="flex flex-col">
               <label htmlFor="date">Todo Due Date</label>
-              <input
-                type="date"
-                id="date"
-                ref={date}
-                className="bg-zinc-200"
-              />
+              <input type="date" id="date" ref={date} className="bg-zinc-200" />
             </div>
             <div className="flex gap-10 mt-10">
               <button
