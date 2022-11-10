@@ -14,8 +14,8 @@ import { TodosContext } from '../lib/TodoContext';
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
-  const initial: TodoItem[] = []
-  // const [Todos, setTodos] = useState<TodoItem[]>([]);
+  const [Todos, setTodos] = useState<TodoItem[]>([]);
+  
   const todosContext = useContext(TodosContext)
   const addHandler = async () => {
     setIsOpen(true);
@@ -32,12 +32,6 @@ const Home: NextPage = () => {
     // console.log(Todos);
   };
 
-  // const Todos = () => {
-  //     .collection("todos")
-
-  // .where("uid", "==", user?.uid)
-  // }
-
   useEffect(() => {
     if (user) {
       if (todosContext.items.length < 1) {
@@ -45,7 +39,8 @@ const Home: NextPage = () => {
         console.log("test")
       }
     }
-  });
+    setTodos(todosContext.items)
+  }, [todosContext.items]);
 
   const getTodos = async () => {
     const q = query(collection(db, "todos"), where("uid", "==", user?.uid));
@@ -62,6 +57,7 @@ const Home: NextPage = () => {
       todosContext.addTodo(item.title, item.description, item.date, item.uid)
       // console.log(todosContext.items)
     });
+    setTodos(todosContext.items)
     // console.log("items", todosContext.items)
   };
   
@@ -96,7 +92,7 @@ const Home: NextPage = () => {
           due="1/1/2023"
           uid={user!.uid}
         />
-        {todosContext.items?.map((todo: TodoItem) => {
+        {Todos?.map((todo: TodoItem) => {
           return (
             <Todo
               title={todo.title}

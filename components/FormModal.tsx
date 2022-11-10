@@ -23,7 +23,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
     const enteredDescription = description.current!.value;
     const enteredDate = date.current!.value
     // const oldTodos: TodoItem[] = props.todos;
-    const newTodo: TodoItem = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
+    const newTodo: TodoItem = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid, todoId: Math.random().toString()}
     
     // props.setTodos((prevState: TodoItem[]) => [...prevState, newTodo])
     todosContext.addTodo(enteredTitle, enteredDescription, enteredDate, user!.uid)
@@ -45,7 +45,8 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
         uid: user.uid,
         title: enteredTitle,
         description: enteredDescription,
-        date: enteredDate
+        date: enteredDate,
+        todoId: Math.random().toString()
       });
 
       console.log("Document written with ID: ", docRef.id);
