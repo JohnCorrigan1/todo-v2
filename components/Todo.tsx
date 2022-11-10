@@ -6,6 +6,7 @@ const Todo: React.FC<{
   description: string;
   due: string;
   done: boolean;
+  uid: string;
 }> = (props) => {
   const [isDone, setIsDone] = useState(props.done);
   const [isExpand, setIsExpand] = useState(false);

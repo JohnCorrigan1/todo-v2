@@ -6,3 +6,4 @@ type UserContextObj = {user: User | null | undefined}
 
 
 export const UserContext = createContext<UserContextObj>({ user: null })
+

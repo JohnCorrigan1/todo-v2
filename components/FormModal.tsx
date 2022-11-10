@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 import { Todo } from '../pages/index'
 
-const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTodos: Dispatch<Todo[]> }> = (
+const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTodos: Dispatch<Todo[]>; todos: Todo[] }> = (
   props
 ) => {
 
@@ -20,9 +20,9 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean>; setTo
     const enteredDescription = description.current!.value;
     const enteredDate = date.current!.value
 
+    const newTodo: Todo = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
     
     addFakeHandler(enteredTitle, enteredDescription, enteredDate)
-    const Todo: Todo = {title: enteredTitle, description: enteredDescription, date: enteredDate, uid: user!.uid}
     props.setIsOpen(false);
   };
 

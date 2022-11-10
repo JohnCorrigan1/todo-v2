@@ -6,28 +6,20 @@ import { auth } from "../lib/firebase";
 import Todo from "../components/Todo";
 import FormModal from "../components/FormModal";
 import { db } from "../lib/firebase";
-import {
-  collection,
-  addDoc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { async } from "@firebase/util";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
-type Todo = {
+export type Todo = {
   title: string;
   description: string;
   date: string;
-  uid: string;
+  uid: string | undefined;
 } | null;
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [Todos, setTodos] = useState<Todo[]>([]);
+  const [Todos, setTodos] = useState<Todo[] | any>([]);
 
   const addHandler = async () => {
     setIsOpen(true);
@@ -64,7 +56,7 @@ const Home: NextPage = () => {
     querySnapshot.forEach((doc: any) => {
       // doc.data() is never undefined for query doc snapshots
       console.log(doc.id, " => ", doc.data());
-      setTodos((prevTodos) => {
+      setTodos((prevTodos: Todo[]) => {
         return [doc.data(), ...prevTodos];
       });
     });
@@ -85,25 +77,32 @@ const Home: NextPage = () => {
           Add Todo
         </button>
       </div>
-      <FormModal isOpen={isOpen} setIsOpen={setIsOpen} setTodos={setTodos} />
-      <div className="items-center justify-center flex flex-col gap-5 mt-10">
+      <FormModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        todos={Todos}
+        setTodos={setTodos}
+      />
+      {user && <div className="items-center justify-center flex flex-col gap-5 mt-10">
         <Todo
           title="Learn Firebase"
           description="Learn authentication and crud operations with firebase and nextJS"
           done={false}
           due="1/1/2023"
+          uid={user!.uid}
         />
-        {Todos?.map((todo) => {
+        {Todos?.map((todo: Todo) => {
           return (
             <Todo
               title={todo!.title}
               description={todo!.description}
               done={false}
               due={todo!.date}
+              uid={user! .uid}
             />
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 };
