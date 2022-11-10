@@ -4,10 +4,8 @@ import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import { UserContext } from "../lib/AuthContext";
 
-
-
 const Navbar: React.FC = () => {
-    const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   return (
     <nav className="flex w-full bg-slate-200 shadow-sm shadow-zinc-400 font-bold">
@@ -39,7 +37,10 @@ const Navbar: React.FC = () => {
             </li>
             <li>
               <Link href="/signin">
-                <button className="bg-sky-500 shadow-sm text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600" onClick={() => auth.signOut()}>
+                <button
+                  className="bg-sky-500 shadow-sm text-white p-2 pr-3 pl-3 rounded-md active:scale-95 hover:bg-sky-600"
+                  onClick={() => auth.signOut()}
+                >
                   Log Out
                 </button>
               </Link>
