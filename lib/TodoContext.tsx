@@ -1,13 +1,10 @@
-import React from "react";
-
 import { TodoItem } from "../models/todo";
 import { useState, createContext } from "react";
-import { defaultConfig } from "next/dist/server/config-shared";
 
 type TodoContextObj = {
     items: TodoItem[],
     addTodo: (title: string, description: string, date: string, uid: string) => void,
-    // removeTodo: (id: string) => void
+    removeTodo: (id: string) => void,
 }
 
 type Props = {
@@ -18,7 +15,8 @@ type Props = {
 
 export const TodosContext = createContext<TodoContextObj>({
   items: [],
-  addTodo: (title: string, description: string, date: string, uid:string) => {},
+  addTodo: () => {},
+  removeTodo: (id: string) => {}
 //   removeTodo: (id: string) => {},
 });
 
@@ -36,16 +34,16 @@ const TodosContextProvider: React.FC<Props> = (props) => {
     });
   };
 
-//   const removeTodoHanler = (id: string) => {
-//     setTodos((prevTodos) => {
-//       return prevTodos.filter((todo) => todo.uid !== id);
-//     });
-//   };
+  const removeTodoHanler = (id: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.todoId !== id);
+    });
+  };
 
   const contextValue: TodoContextObj = {
     items: todos,
     addTodo: addTodoHandler,
-    // removeTodo: removeTodoHanler
+    removeTodo: removeTodoHanler
   };
 
   return <TodosContext.Provider value={contextValue}>{props.children}</TodosContext.Provider>;

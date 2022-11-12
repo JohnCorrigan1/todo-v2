@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Image from "next/image";
+import { TodosContext } from "../lib/TodoContext";
+import { db } from "../lib/firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const Todo: React.FC<{
   title: string;
@@ -7,9 +10,11 @@ const Todo: React.FC<{
   due: string;
   done: boolean;
   uid: string;
+  todoId: string;
 }> = (props) => {
   const [isDone, setIsDone] = useState(props.done);
   const [isExpand, setIsExpand] = useState(false);
+  const todosContext = useContext(TodosContext);
 
   const doneHandler = () => {
     setIsDone(!isDone);
@@ -18,6 +23,24 @@ const Todo: React.FC<{
   const expandHandler = () => {
     setIsExpand(!isExpand);
   };
+
+  const removeHandler = async() => {
+    removeFromFirebase();
+    await deleteDoc(doc(db, "todos", props.todoId));
+    todosContext.removeTodo(props.todoId);
+  }
+
+  //remove from todo from firebase on click
+  const removeFromFirebase = async () => {
+    try {
+     await deleteDoc(doc(db, "todos", props.todoId));
+      console.log("Document successfully deleted!");
+    } catch (e) {
+      console.error("Error removing document: ", e);
+    }
+  };
+
+
 
   return (
     <div className="flex flex-col w-full items-center sm:w-2/3">
@@ -52,6 +75,7 @@ const Todo: React.FC<{
           </div>
           {isDone && (
             <Image
+              onClick={removeHandler}
               src="/trash.svg"
               width={30}
               height={30}

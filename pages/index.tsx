@@ -65,6 +65,8 @@ const Home: NextPage = () => {
             done={false}
             due="1/1/2023"
             uid={user!.uid}
+            key={Math.random().toString()}
+            todoId={"1"}
           />
           {Todos?.map((todo: TodoItem) => {
             return (
@@ -75,6 +77,7 @@ const Home: NextPage = () => {
                 due={todo.date}
                 uid={user.uid}
                 key={todo.todoId}
+                todoId={todo.todoId}
               />
             );
           })}
