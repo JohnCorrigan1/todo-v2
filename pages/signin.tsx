@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { signInWithPopup, signInAnonymously } from "firebase/auth";
+import { signInWithPopup, signInAnonymously, signInWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
 import { UserContext } from "../lib/AuthContext";
 import { auth, googleProvider } from "../lib/firebase";
@@ -13,20 +13,58 @@ const SignIn: NextPage = () => {
     await signInWithPopup(auth, googleProvider);
   };
 
+  const submitHandler  = async () => {
+    await signInWithEmailAndPassword(auth, "", "");
+    console.log("signed in with email and password");
+  };
+
+  const signInAnonymously = async () => {
+    await signInAnonymously();
+  };
+
+
   return (
-    <div className="flex justify-center mt-10">
+    <div className="flex justify-center mt-10 w-full">
       <Head>
         <title>Todo</title>
         <meta name="Todo app" content="List of your todos" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="p-10 flex item-center flex-col border-2 border-black rounded-lg bg-zinc-50 shadow-xl">
+        <form onSubmit={submitHandler} className="border-b border-black pb-5">
+          <div className="flex flex-col w-full">
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" className="border-2 rounded-md pl-1 pr-1 border-slate-400" />
+          </div>
+          <div className="flex flex-col w-full">
+            <label htmlFor="password">Password:</label>
+            <input type="password" id="password" className="border-2 rounded-md pl-1 pr-1 border-slate-400" />
+            </div>
+            <div className=" mt-5 flex justify-center gap-5">
+              <button type="submit" className="bg-blue-400 hover:bg-blue-500 active:scale-95 rounded-md pl-3 pr-3 p-2 shadow-md cursor-pointer">Sign in</button>
+              <button className=" rounded-md bg-zinc-200 p-2 pl-3 pr-3 shadow-md cursor-pointer active:scale-95 hover:bg-zinc-300">Sign up</button>
+            </div>
+        </form>
+
+      <div className="mt-5">
       <button
-        className="bg-zinc-200 rounded-md p-3 flex gap-10 items-center shadow-sm border"
+        className="bg-zinc-200 rounded-md p-2 flex gap-8 items-center shadow-sm border w-full"
         onClick={signInWithGoogle}
       >
         <Image src="/google.png" alt="Google sign in" width={30} height={30} />{" "}
         Sign in with Google
       </button>
+      </div>
+      <div className="mt-5">
+      <button
+        className="bg-zinc-200 rounded-md p-2 flex gap-8 items-center shadow-sm border"
+        onClick={signInAnonymously}
+      >
+        <Image src="/anon.svg" alt="anon sign in" width={30} height={30} />{" "}
+        Sign in anonymously
+      </button>
+      </div>
+      </div>
     </div>
   );
 };

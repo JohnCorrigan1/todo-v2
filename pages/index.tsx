@@ -35,15 +35,21 @@ const Home: NextPage = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      console.log(doc.ref)
-      
-      todosContext.addFromFirebase(item.title, item.description, item.date, item.uid, doc.id);
+      console.log(doc.ref);
+
+      todosContext.addFromFirebase(
+        item.title,
+        item.description,
+        item.date,
+        item.uid,
+        doc.id
+      );
     });
     setTodos(todosContext.items);
   };
 
   return (
-    <div className="flex justify-center flex-col">
+    <div className="flex justify-center flex-col w-full items-center">
       <Head>
         <title>Todo</title>
         <meta name="Todo app" content="List of your todos" />
@@ -53,13 +59,16 @@ const Home: NextPage = () => {
         {user ? <h1>{user.displayName}s Todos</h1> : <h1>Sign in</h1>}
       </div>
       <div className="flex justify-center mt-5">
-        <button className="bg-emerald-300 p-3 rounded-md active:scale-95 hover:bg-emerald-400 font-bold" onClick={addHandler}>
+        <button
+          className="bg-emerald-300 p-3 rounded-md active:scale-95 hover:bg-emerald-400 font-bold shadow-md"
+          onClick={addHandler}
+        >
           Add Todo
         </button>
       </div>
       <FormModal isOpen={isOpen} setIsOpen={setIsOpen} />
       {user ? (
-        <div className="items-center justify-center flex flex-col gap-5 mt-10">
+        <div className="items-center justify-center flex flex-col gap-5 mt-10 w-full">
           <Todo
             title="Learn Firebase"
             description="Learn authentication and crud operations with firebase and nextJS"

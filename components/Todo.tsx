@@ -44,11 +44,11 @@ const Todo: React.FC<{
 
 
   return (
-    <div className="flex flex-col w-full items-center sm:w-2/3">
+    <div className="flex flex-col w-full items-center lg:w-3/4 xl:w-2/3">
       <div
         className={
           (isExpand ? "rounded-t-md " : "rounded-md ") +
-          "bg-slate-400 flex justify-between p-3 items-center w-5/6  shadow-lg sm:w-2/3"
+          "bg-slate-400 flex justify-between p-3 items-center w-11/12  shadow-lg sm:w-2/3"
         }
       >
         <h1
@@ -56,11 +56,11 @@ const Todo: React.FC<{
         >
           {props.title}
         </h1>
-        <div className="flex gap-5">
+        <div className="flex gap-5  w-1/3 ml-auto todo-buttons">
           <div
             className={
               (isDone ? "bg-emerald-500 " : "bg-slate-400 ") +
-              "border-2 border-white rounded-full w-8 h-8 cursor-pointer active:scale-90"
+              "border-2 border-white rounded-full w-8 h-8 cursor-pointer active:scale-90 ml-auto is-done"
             }
             onClick={doneHandler}
           ></div>
@@ -87,7 +87,7 @@ const Todo: React.FC<{
         </div>
       </div>
       {isExpand && (
-        <div className=" shadow-md rounded-b-md flex-start w-5/6 sm:w-2/3 p-3 bg-slate-300 border-t-black border-t ">
+        <div className=" shadow-md rounded-b-md flex-start w-11/12 sm:w-2/3 p-3 bg-slate-300 border-t-black border-t ">
           {props.description}
         </div>
       )}

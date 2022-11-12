@@ -14,6 +14,7 @@ module.exports = {
       'md': {'min': '767px'},
       'sm': {'min': '639px'},
       'xs': {'min': '550px'},
+      'xxs': {'min': '375px'},
     },
   },
   plugins: [],
