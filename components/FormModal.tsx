@@ -1,6 +1,6 @@
 import React, { Dispatch, useRef, useContext } from "react";
 import { db } from "../lib/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, DocumentReference, DocumentData } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 import { TodosContext } from "../lib/TodoContext";
@@ -20,14 +20,16 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
     const enteredTitle = title.current!.value;
     const enteredDescription = description.current!.value;
     const enteredDate = date.current!.value;
+    const id = Math.random.toString();
 
     todosContext.addTodo(
       enteredTitle,
       enteredDescription,
       enteredDate,
-      user!.uid
+      user!.uid,
+      id
     );
-    addFakeHandler(enteredTitle, enteredDescription, enteredDate);
+    addFakeHandler(enteredTitle, enteredDescription, enteredDate, id);
     props.setIsOpen(false);
   };
 
@@ -38,7 +40,8 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
   const addFakeHandler = async (
     enteredTitle: string,
     enteredDescription: string,
-    enteredDate: string
+    enteredDate: string,
+    id: string
   ) => {
     if (!user) {
       return;
@@ -50,13 +53,17 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
         title: enteredTitle,
         description: enteredDescription,
         date: enteredDate,
-        todoId: Math.random().toString(),
+        todoId: id,
       });
-
+      updateTodoId(docRef, id);
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+  };
+
+  const updateTodoId = (id: DocumentReference<DocumentData>, oldId: string) => {
+    todosContext.updateId(id.id, oldId);
   };
 
   if (!props.isOpen) return null;

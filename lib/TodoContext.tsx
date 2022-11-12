@@ -3,8 +3,10 @@ import { useState, createContext } from "react";
 
 type TodoContextObj = {
     items: TodoItem[],
-    addTodo: (title: string, description: string, date: string, uid: string) => void,
+    addTodo: (title: string, description: string, date: string, uid: string, id: string) => void,
+    addFromFirebase(title: string, description: string, date: string, uid: string, todoId: string): void,
     removeTodo: (id: string) => void,
+    updateId: (id: string, oldId: string) => void
 }
 
 type Props = {
@@ -16,23 +18,25 @@ type Props = {
 export const TodosContext = createContext<TodoContextObj>({
   items: [],
   addTodo: () => {},
-  removeTodo: (id: string) => {}
-//   removeTodo: (id: string) => {},
+  addFromFirebase: () => {},
+  removeTodo: (id: string) => {},
+  updateId: (id: string) => {}
 });
 
 const TodosContextProvider: React.FC<Props> = (props) => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
-  // const addTodoHandler = (title: string, description: string, date: string, uid: string) => {
-  //   setTodos((prevTodos) => {
-  //     return prevTodos.concat(new TodoItem(title, description, date, uid));
-  //   });
-  const addTodoHandler = (title: string, description: string, date: string, uid: string) => {
-    console.log("in contect", todos)
+  const addTodoHandler = (title: string, description: string, date: string, uid: string, id: string) => {
     setTodos((prevTodos) => {
-      return [...prevTodos, new TodoItem(title, description, date, uid)];
+      return [...prevTodos, new TodoItem(title, description, date, uid, id)];
     });
   };
+
+  const addFromFirebaseHandler = (title: string, description: string, date: string, uid: string, todoId: string) => {
+    setTodos((prevTodos) => {
+      return [...prevTodos, new TodoItem(title, description, date, uid, todoId)];
+    });
+  }
 
   const removeTodoHanler = (id: string) => {
     setTodos((prevTodos) => {
@@ -40,13 +44,27 @@ const TodosContextProvider: React.FC<Props> = (props) => {
     });
   };
 
+  const updateIdHanlder  = (id: string, oldId: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.todoId === oldId) {
+          todo.todoId = id;
+        }
+        return todo;
+      });
+    });
+  };
+
+
   const contextValue: TodoContextObj = {
     items: todos,
     addTodo: addTodoHandler,
-    removeTodo: removeTodoHanler
+    addFromFirebase: addFromFirebaseHandler,
+    removeTodo: removeTodoHanler,
+    updateId: updateIdHanlder
   };
 
   return <TodosContext.Provider value={contextValue}>{props.children}</TodosContext.Provider>;
 };
 
-export default TodosContextProvider
+export default TodosContextProvider;

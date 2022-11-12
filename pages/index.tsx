@@ -8,7 +8,6 @@ import FormModal from "../components/FormModal";
 import { db } from "../lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { TodoItem } from "../models/todo";
-import TodosContextProvider from "../lib/TodoContext";
 import { TodosContext } from "../lib/TodoContext";
 
 const Home: NextPage = () => {
@@ -36,7 +35,9 @@ const Home: NextPage = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      todosContext.addTodo(item.title, item.description, item.date, item.uid);
+      console.log(doc.ref)
+      
+      todosContext.addFromFirebase(item.title, item.description, item.date, item.uid, doc.id);
     });
     setTodos(todosContext.items);
   };
@@ -51,8 +52,8 @@ const Home: NextPage = () => {
       <div className="flex justify-center mt-10 text-2xl">
         {user ? <h1>{user.displayName}s Todos</h1> : <h1>Sign in</h1>}
       </div>
-      <div>
-        <button className="bg-emerald-300 p-3" onClick={addHandler}>
+      <div className="flex justify-center mt-5">
+        <button className="bg-emerald-300 p-3 rounded-md active:scale-95 hover:bg-emerald-400 font-bold" onClick={addHandler}>
           Add Todo
         </button>
       </div>
