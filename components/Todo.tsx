@@ -28,7 +28,6 @@ const Todo: React.FC<{
   const removeHandler = async() => {
     // removeFromFirebase();
     await deleteDoc(doc(db, "todos", props.todoId));
-    console.log(props.todoId)
     todosContext.removeTodo(props.todoId);
     toast.success("Todo removed");
   };

@@ -59,7 +59,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
       updateTodoId(docRef, id);
       toast.success("Todo added");
     } catch (e) {
-      console.error("Error adding document: ", e);
+      toast.error("Error adding document");
     }
   };
 

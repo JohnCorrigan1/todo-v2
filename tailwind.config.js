@@ -5,6 +5,7 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {},
     screens: {
@@ -16,6 +17,7 @@ module.exports = {
       'xs': {'min': '550px'},
       'xxs': {'min': '375px'},
     },
+    
   },
   plugins: [],
 }

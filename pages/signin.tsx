@@ -38,6 +38,7 @@ const SignIn: NextPage = () => {
 
   const signInAnonymouslyHandler = async () => {
     await signInAnonymously(auth);
+    toast.success("Signed in anonymously");
   };
 
   const emailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,13 +50,13 @@ const SignIn: NextPage = () => {
   };
 
   return (
-    <div className="flex justify-center mt-10 w-full">
+    <div className="flex justify-center mt-20 w-full h-full signin">
       <Head>
         <title>Todo</title>
         <meta name="Todo app" content="List of your todos" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="p-10 flex item-center flex-col border-2 border-black rounded-lg bg-zinc-50 shadow-xl">
+      <div className="p-10 flex item-center flex-col border-2 border-black rounded-lg bg-zinc-50 shadow-xl dark:bg-zinc-400">
         <form onSubmit={submitHandler} className="border-b border-black pb-5">
           <div className="flex flex-col w-full">
             <label htmlFor="email">Email:</label>

@@ -22,10 +22,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user)
       if (todosContext.items.length < 1) {
         getTodos();
-        console.log("test");
       }
     }
     setTodos(todosContext.items);
@@ -36,7 +34,6 @@ const Home: NextPage = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      console.log(doc.ref);
 
       todosContext.addFromFirebase(
         item.title,
@@ -56,18 +53,19 @@ const Home: NextPage = () => {
         <meta name="Todo app" content="List of your todos" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex justify-center mt-10 text-2xl">
+      <div className="flex justify-center mt-10 text-2xl dark:text-zinc-50">
         {/* {user ? <h1>{user?.displayName}s Todos</h1> : <h1>Sign in</h1>} */}
-       {user ? user.isAnonymous ? <h1>Anons Todos</h1> : <h1>{user?.displayName ? user.displayName : "My Todos"}s Todos</h1> : <h1></h1>}
+       {user ? user.isAnonymous ? <h1 >Anons Todos</h1> : <h1>{user?.displayName ? user.displayName : "My Todos"}s Todos</h1> : <h1></h1>}
       </div>
+      {user && (
       <div className="flex justify-center mt-5">
         <button
-          className="bg-emerald-300 p-3 rounded-md active:scale-95 hover:bg-emerald-400 font-bold shadow-md"
+          className="bg-emerald-300 p-3 rounded-md active:scale-95 hover:bg-emerald-400 font-bold shadow-md dark:bg-emerald-500 dark:text-zinc-50 dark:hover:bg-emerald-600"
           onClick={addHandler}
         >
           Add Todo
         </button>
-      </div>
+      </div>)}
       <FormModal isOpen={isOpen} setIsOpen={setIsOpen} />
       {user ? (
         <div className="items-center justify-center flex flex-col gap-5 mt-10 w-full">
@@ -95,7 +93,7 @@ const Home: NextPage = () => {
           })}
         </div>
       ) : (
-        <div className="text-xl mt-10">Log in to view and add todos</div>
+        <div className="text-2xl font-semibold  mt-10 dark:text-zinc-50">Log in to view and add todos</div>
       )}
     </div>
   );

@@ -30,10 +30,6 @@ const SignUp: NextPage = () => {
   };
 
   const submitHandler = (event: React.FormEvent) => {
-    // const emailRef = useRef<HTMLInputElement>()
-    // const emailRef = useRef<HTMLInputElement>(null);
-    // const passwordRef = useRef<HTMLInputElement>()
-    // const confirmPasswordRef = useRef<HTMLInputElement>()
     event.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
@@ -48,27 +44,23 @@ const SignUp: NextPage = () => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(user)
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         toast.error("Error: " + errorMessage, errorCode);
-        // ..
       });
   };
 
   return (
-    <div className="flex justify-center mt-10 w-full">
+    <div className="flex justify-center mt-20 w-full">
       <Head>
         <title>Todo</title>
         <meta name="Todo app" content="List of your todos" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="p-10 flex item-center flex-col border-2 border-black rounded-lg bg-zinc-50 shadow-xl">
+      <div className="p-10 flex item-center flex-col border-2 border-black rounded-lg bg-zinc-50 dark:bg-zinc-400 shadow-xl">
         <form onSubmit={submitHandler} className="">
           <div className="flex flex-col w-full">
             <label htmlFor="email">Email:</label>

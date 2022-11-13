@@ -10,6 +10,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+.dark{
+  background-color: #1a202c;
+  text-decoration-color: #fafafa;
+}
+
 .is-done {
  min-width: 32px;
  min-height:32px;
