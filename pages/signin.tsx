@@ -1,16 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { signInWithPopup, signInAnonymously, signInWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
 import { UserContext } from "../lib/AuthContext";
 import { auth, googleProvider } from "../lib/firebase";
+import toast from 'react-hot-toast';
 
 const SignIn: NextPage = () => {
   const { user } = useContext(UserContext);
 
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider);
+    toast.success("Signed in with Google");
   };
 
   const submitHandler  = async () => {
@@ -18,8 +21,8 @@ const SignIn: NextPage = () => {
     console.log("signed in with email and password");
   };
 
-  const signInAnonymously = async () => {
-    await signInAnonymously();
+  const signInAnonymouslyHandler = async () => {
+    await signInAnonymously(auth);
   };
 
 
@@ -42,7 +45,7 @@ const SignIn: NextPage = () => {
             </div>
             <div className=" mt-5 flex justify-center gap-5">
               <button type="submit" className="bg-blue-400 hover:bg-blue-500 active:scale-95 rounded-md pl-3 pr-3 p-2 shadow-md cursor-pointer">Sign in</button>
-              <button className=" rounded-md bg-zinc-200 p-2 pl-3 pr-3 shadow-md cursor-pointer active:scale-95 hover:bg-zinc-300">Sign up</button>
+              <Link href="/signup"><button className=" rounded-md bg-zinc-200 p-2 pl-3 pr-3 shadow-md cursor-pointer active:scale-95 hover:bg-zinc-300">Sign up</button></Link>
             </div>
         </form>
 
@@ -58,7 +61,7 @@ const SignIn: NextPage = () => {
       <div className="mt-5">
       <button
         className="bg-zinc-200 rounded-md p-2 flex gap-8 items-center shadow-sm border"
-        onClick={signInAnonymously}
+        onClick={signInAnonymouslyHandler}
       >
         <Image src="/anon.svg" alt="anon sign in" width={30} height={30} />{" "}
         Sign in anonymously

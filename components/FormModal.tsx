@@ -4,6 +4,7 @@ import { collection, addDoc, DocumentReference, DocumentData } from "firebase/fi
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 import { TodosContext } from "../lib/TodoContext";
+import toast from "react-hot-toast";
 
 const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
   props
@@ -56,7 +57,7 @@ const FormModal: React.FC<{ isOpen: boolean; setIsOpen: Dispatch<boolean> }> = (
         todoId: id,
       });
       updateTodoId(docRef, id);
-      console.log("Document written with ID: ", docRef.id);
+      toast.success("Todo added");
     } catch (e) {
       console.error("Error adding document: ", e);
     }

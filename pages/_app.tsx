@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './../lib/firebase';
 import TodosContextProvider from '../lib/TodoContext';
-import { TodosContext } from '../lib/TodoContext';
+import { Toaster } from 'react-hot-toast'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <UserContext.Provider value={{ user }}>
       <Navbar />
       <Component {...pageProps} />
+      <Toaster />
     </UserContext.Provider>
     </TodosContextProvider>
   ) 

@@ -22,13 +22,14 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (user) {
+      console.log(user)
       if (todosContext.items.length < 1) {
         getTodos();
         console.log("test");
       }
     }
     setTodos(todosContext.items);
-  }, [todosContext]);
+  }, [todosContext, user]);
 
   const getTodos = async () => {
     const q = query(collection(db, "todos"), where("uid", "==", user?.uid));
@@ -56,7 +57,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-center mt-10 text-2xl">
-        {user ? <h1>{user.displayName}s Todos</h1> : <h1>Sign in</h1>}
+        {/* {user ? <h1>{user?.displayName}s Todos</h1> : <h1>Sign in</h1>} */}
+       {user ? user.isAnonymous ? <h1>Anons Todos</h1> : <h1>{user?.displayName ? user.displayName : "My Todos"}s Todos</h1> : <h1></h1>}
       </div>
       <div className="flex justify-center mt-5">
         <button
@@ -93,7 +95,7 @@ const Home: NextPage = () => {
           })}
         </div>
       ) : (
-        <div>Sign in to view and add todos</div>
+        <div className="text-xl mt-10">Log in to view and add todos</div>
       )}
     </div>
   );

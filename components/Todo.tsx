@@ -3,6 +3,7 @@ import Image from "next/image";
 import { TodosContext } from "../lib/TodoContext";
 import { db } from "../lib/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 const Todo: React.FC<{
   title: string;
@@ -29,19 +30,8 @@ const Todo: React.FC<{
     await deleteDoc(doc(db, "todos", props.todoId));
     console.log(props.todoId)
     todosContext.removeTodo(props.todoId);
-  }
-
-  //remove from todo from firebase on click
-  const removeFromFirebase = async () => {
-    try {
-     await deleteDoc(doc(db, "todos", props.todoId));
-      console.log("Document successfully deleted!");
-    } catch (e) {
-      console.error("Error removing document: ", e);
-    }
+    toast.success("Todo removed");
   };
-
-
 
   return (
     <div className="flex flex-col w-full items-center lg:w-3/4 xl:w-2/3">
