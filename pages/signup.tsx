@@ -6,7 +6,7 @@ import {
   getAuth,
   sendSignInLinkToEmail,
 } from "firebase/auth";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const SignUp: NextPage = () => {
@@ -28,12 +28,13 @@ const SignUp: NextPage = () => {
   ) => {
     setConfirmPassword(event.target.value);
   };
-  const submitHandler = () => {
+
+  const submitHandler = (event: React.FormEvent) => {
     // const emailRef = useRef<HTMLInputElement>()
     // const emailRef = useRef<HTMLInputElement>(null);
     // const passwordRef = useRef<HTMLInputElement>()
     // const confirmPasswordRef = useRef<HTMLInputElement>()
-
+    event.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -49,11 +50,13 @@ const SignUp: NextPage = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        console.log(user)
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        toast.error("Error: " + errorMessage, errorCode);
         // ..
       });
   };
