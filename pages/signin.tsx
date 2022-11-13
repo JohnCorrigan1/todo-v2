@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { signInWithPopup, signInAnonymously, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithPopup, signInAnonymously, signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useContext, useState } from "react";
 import { UserContext } from "../lib/AuthContext";
 import { auth, googleProvider } from "../lib/firebase";
@@ -19,9 +19,21 @@ const SignIn: NextPage = () => {
     toast.success("Signed in with Google");
   };
 
-  const submitHandler  = async () => {
-    await signInWithEmailAndPassword(auth, email, password);
-    console.log("signed in with email and password");
+  const submitHandler  = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+        toast.success("Signed in with email and password");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error("Error: " + errorMessage, errorCode);
+      });
   };
 
   const signInAnonymouslyHandler = async () => {
